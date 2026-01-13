@@ -1,0 +1,26 @@
+# Storage directories
+storage/
+config/mosquitto/passwd
+
+# Environment files
+.env
+
+# Docker volumes
+frigate_data/
+mqtt_data/
+nodered_data/
+portainer_data/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

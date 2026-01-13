@@ -1,0 +1,175 @@
+mqtt:
+  enabled: true
+  host: mqtt
+  port: 1883
+  topic_prefix: frigate
+  client_id: frigate
+  # user: mqtt_user  # Uncomment and set if you configure MQTT authentication
+  # password: mqtt_password
+
+# Go2RTC configuration (for improved stream handling)
+go2rtc:
+  streams:
+    doorbell:
+      - rtsp://192.168.1.100:8554/camera
+    doorbell_sub:  # Optional: if you have a sub-stream
+      - rtsp://192.168.1.100:8554/camera
+
+# Database configuration
+database:
+  path: /media/frigate/frigate.db
+
+# Detectors configuration
+detectors:
+  cpu1:
+    type: cpu
+    num_threads: 3
+  # Uncomment if you have a Coral TPU (highly recommended for better performance)
+  # coral:
+  #   type: edgetpu
+  #   device: usb
+  
+  # For Raspberry Pi 5 with Hailo-8L AI Kit (if available)
+  # hailo:
+  #   type: hailo8l
+  #   device: 0
+
+# Model configuration
+model:
+  width: 320
+  height: 320
+  input_tensor: nhwc
+  input_pixel_format: rgb
+  labelmap_path: /labelmap.txt
+
+# Recording configuration
+record:
+  enabled: true
+  retain:
+    days: 7  # Keep recordings for 7 days
+    mode: motion  # Only keep recordings with motion/objects
+  events:
+    retain:
+      default: 14  # Keep event clips for 14 days
+      mode: active_objects
+
+# Snapshots configuration
+snapshots:
+  enabled: true
+  timestamp: false
+  bounding_box: true
+  crop: false
+  retain:
+    default: 14  # Keep snapshots for 14 days
+
+# Live view configuration
+live:
+  stream_name: doorbell  # Default camera for live view
+
+# Object detection configuration
+objects:
+  track:
+    - person
+    - dog
+    - cat
+    - car
+  filters:
+    person:
+      min_area: 5000  # Minimum pixel area to consider
+      max_area: 100000
+      threshold: 0.7  # Confidence threshold (0-1)
+      min_score: 0.5
+
+# Camera configuration
+cameras:
+  doorbell:
+    enabled: true
+    ffmpeg:
+      inputs:
+        # Using go2rtc stream for better performance
+        - path: rtsp://127.0.0.1:8554/doorbell  # Go2RTC restream
+          roles:
+            - detect
+        - path: rtsp://127.0.0.1:8554/doorbell  # Go2RTC restream
+          roles:
+            - record
+      # Alternative: Direct RTSP (comment out go2rtc section if using this)
+      # inputs:
+      #   - path: rtsp://192.168.1.100:8554/camera  # Direct from Pi Zero
+      #     roles:
+      #       - detect
+      #       - record
+      output_args:
+        record: preset-record-generic-audio-copy
+
+    detect:
+      enabled: true
+      width: 1280
+      height: 720
+      fps: 5  # Detection FPS (lower = less CPU usage)
+      stationary:
+        interval: 50
+        threshold: 50
+
+    # Motion detection configuration
+    motion:
+      mask: []  # Add motion mask coordinates if needed
+      threshold: 30
+      contour_area: 10
+      lightning_threshold: 0.8
+
+    # Define zones for detection (e.g., doorway area)
+    zones:
+      doorway:
+        coordinates: 320,0,960,0,960,720,320,720  # Adjust based on your camera view
+        objects:
+          - person
+        filters:
+          person:
+            min_area: 5000
+            max_area: 100000
+            threshold: 0.75
+
+    # Snapshots for this camera
+    snapshots:
+      enabled: true
+      timestamp: false
+      bounding_box: true
+      crop: true
+      required_zones:
+        - doorway
+
+    # Recording for this camera
+    record:
+      enabled: true
+      retain:
+        days: 7
+        mode: motion
+      events:
+        retain:
+          default: 14
+          mode: active_objects
+
+    # Audio detection (optional)
+    audio:
+      enabled: false  # Enable if you want audio event detection
+      # listen:
+      #   - bark
+      #   - speech
+
+# UI Configuration
+ui:
+  live_mode: webrtc  # Options: webrtc (recommended), mse, jsmpeg
+  timezone: America/New_York  # Change to your timezone
+  use_experimental: false
+  strftime_fmt: "%Y-%m-%d %H:%M"
+
+# Notification configuration (via MQTT)
+# You can subscribe to these MQTT topics for notifications:
+# - frigate/doorbell/person/snapshot (image)
+# - frigate/doorbell/person (JSON event data)
+# - frigate/events (all events)
+
+# Optional: Telemetry (disable if you want)
+telemetry:
+  version_check: true

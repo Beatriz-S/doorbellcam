@@ -1,0 +1,80 @@
+version: "3.9"
+
+services:
+  # Frigate NVR - Main object detection and recording service
+  frigate:
+    container_name: frigate
+    image: ghcr.io/blakeblackshear/frigate:stable
+    restart: unless-stopped
+    privileged: true  # Required for hardware acceleration
+    shm_size: "256mb"  # Increase if you have multiple cameras
+    devices:
+      # Uncomment if you have a Coral TPU (highly recommended)
+      # - /dev/bus/usb:/dev/bus/usb
+      # - /dev/apex_0:/dev/apex_0
+      
+      # For Intel hardware acceleration (if available)
+      # - /dev/dri/renderD128
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./config/frigate.yml:/config/config.yml
+      - ./storage/frigate:/media/frigate
+      - type: tmpfs  # Optional: 1GB of memory for cache
+        target: /tmp/cache
+        tmpfs:
+          size: 1000000000
+    ports:
+      - "5000:5000"  # Web UI
+      - "8554:8554"  # RTSP feeds
+      - "8555:8555/tcp"  # WebRTC over TCP
+      - "8555:8555/udp"  # WebRTC over UDP
+    environment:
+      FRIGATE_RTSP_PASSWORD: "your_secure_password_here"
+    depends_on:
+      - mqtt
+
+  # MQTT Broker - For notifications and integrations
+  mqtt:
+    container_name: mqtt
+    image: eclipse-mosquitto:2.0
+    restart: unless-stopped
+    ports:
+      - "1883:1883"  # MQTT
+      - "9001:9001"  # MQTT over WebSockets
+    volumes:
+      - ./config/mosquitto:/mosquitto/config
+      - ./storage/mosquitto/data:/mosquitto/data
+      - ./storage/mosquitto/log:/mosquitto/log
+    command: mosquitto -c /mosquitto/config/mosquitto.conf
+
+  # Optional: Node-RED for automation and notifications
+  nodered:
+    container_name: nodered
+    image: nodered/node-red:latest
+    restart: unless-stopped
+    ports:
+      - "1880:1880"
+    volumes:
+      - ./storage/nodered:/data
+    environment:
+      - TZ=America/New_York  # Change to your timezone
+    depends_on:
+      - mqtt
+
+  # Optional: Portainer for easy Docker management
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce:latest
+    restart: unless-stopped
+    ports:
+      - "9443:9443"
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./storage/portainer:/data
+
+volumes:
+  frigate_data:
+  mqtt_data:
+  nodered_data:
+  portainer_data:
