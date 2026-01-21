@@ -181,6 +181,18 @@ After changes, restart the service:
 sudo systemctl restart mediamtx  # or doorbell-camera
 ```
 
+## Reducing Stream Latency
+
+If you experience delay when viewing the stream, see the **[LOW-LATENCY-GUIDE.md](LOW-LATENCY-GUIDE.md)** for:
+- VLC optimization settings
+- Low-latency ffmpeg configuration
+- Alternative players and methods
+
+Quick VLC fix:
+```bash
+vlc rtsp://10.0.0.18:8554/camera --network-caching=0 --rtsp-tcp
+```
+
 ## Troubleshooting
 
 ### Camera Not Detected
