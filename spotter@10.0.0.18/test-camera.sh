@@ -1,6 +1,5 @@
 #!/bin/bash
 # Test script to verify camera is working on Raspberry Pi Zero 2 W
-# Modified for USB Camera support
 
 echo "=========================================="
 echo "Camera Test Script"
@@ -10,11 +9,9 @@ echo ""
 # Check if camera is detected
 echo "1. Checking if camera is detected..."
 if vcgencmd get_camera | grep -q "detected=1"; then
-    echo "✓ CSI Camera detected!"
-elif ls /dev/video* &> /dev/null; then
-    echo "✓ USB Camera detected!"
+    echo "✓ Camera detected!"
 else
-    echo "✗ No camera detected. Please check connections."
+    echo "✗ Camera not detected. Please check connections."
     exit 1
 fi
 
