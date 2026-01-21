@@ -5,11 +5,13 @@ This directory contains scripts to set up your Raspberry Pi Zero 2 W as a camera
 ## Prerequisites
 
 - Raspberry Pi Zero 2 W
-- Raspberry Pi Camera Module (v2 or v3 recommended)
+- Raspberry Pi Camera Module (v2 or v3 recommended) OR USB Camera
 - MicroSD card (16GB+ recommended)
 - USB microphone (optional, for audio)
 - Power supply
 - Network connection (WiFi or Ethernet adapter)
+
+**Note**: This guide supports both CSI ribbon cameras and USB cameras.
 
 ## Initial Setup
 
@@ -197,13 +199,24 @@ vlc rtsp://10.0.0.18:8554/camera --network-caching=0 --rtsp-tcp
 
 ### Camera Not Detected
 
-1. Check camera connection
+**For CSI Ribbon Cameras:**
+1. Check camera ribbon cable connection
 2. Enable camera interface:
    ```bash
    sudo raspi-config
    # Interface Options > Camera > Enable
    ```
 3. Reboot: `sudo reboot`
+
+**For USB Cameras:**
+1. Check USB connection
+2. Verify camera is detected:
+   ```bash
+   lsusb
+   v4l2-ctl --list-devices
+   v4l2-ctl -d /dev/video0 --list-formats-ext
+   ```
+3. No raspi-config changes needed for USB cameras
 
 ### Stream Not Working
 

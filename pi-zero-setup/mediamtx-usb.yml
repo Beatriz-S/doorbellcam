@@ -7,23 +7,19 @@ rtmpAddress: :1935
 hlsAddress: :8888
 webrtcAddress: :8889
 
-# Authentication (optional - uncomment to enable)
-# authMethod: internal
-# authInternalUsers:
-#   - user: doorbell
-#     pass: your_password_here
-
-# Performance settings for low latency
+# Performance settings
 readTimeout: 10s
 writeTimeout: 10s
-readBufferCount: 256
+readBufferCount: 512
+
+# Logging
+logLevel: info
 
 # Path configuration
 paths:
   camera:
-    # USB Camera via FFmpeg - Hardware accelerated encoding
-    # Note: Uses h264_v4l2m2m for GPU encoding (much more efficient than libx264)
-    # Resolution: 640x480 @ 10fps (balanced for Pi Zero 2 W performance)
-    source: publisher
-    runOnInit: ffmpeg -f v4l2 -input_format mjpeg -video_size 640x480 -framerate 10 -i /dev/video0 -pix_fmt yuv420p -c:v h264_v4l2m2m -num_output_buffers 32 -num_capture_buffers 16 -b:v 500k -f rtsp rtsp://localhost:$RTSP_PORT/$MTX_PATH
-    runOnInitRestart: true
+    # USB Camera via FFmpeg - Software encoding with libx264
+    # Resolution: 1280x720 @ 15fps
+    # Note: Uses libx264 software encoding (more reliable than h264_v4l2m2m)
+    runOnInit: ffmpeg -f v4l2 -input_format mjpeg -video_size 1280x720 -framerate 15 -i /dev/video0 -c:v libx264 -preset ultrafast -tune zerolatency -b:v 1000k -f rtsp rtsp://localhost:8554/camera
+    runOnInitRestart: yes
