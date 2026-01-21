@@ -114,10 +114,21 @@ The configuration files have been updated with low-latency optimizations. To app
 
 With these optimizations, you should see:
 - **Delay reduced to**: ~0.5-1.5 seconds (from typical 3-5+ seconds)
+- **Current working config**: 640x480 @ 10fps with hardware encoding
 - **Trade-offs**: 
-  - Slightly higher CPU usage on Pi Zero
+  - Lower resolution (640x480 instead of 1280x720) for Pi Zero performance
+  - Hardware encoding is very efficient (low CPU usage)
   - Potentially more frame drops under poor network conditions
-  - Less smooth video during fast motion
+
+## Note on Pi Zero 2 W Performance
+
+The Pi Zero 2 W has limited CPU power. The working configuration uses:
+- **Hardware encoding** (h264_v4l2m2m) - Uses GPU instead of CPU
+- **640x480 resolution** - Balanced quality/performance
+- **10 fps** - Smooth enough for doorbell monitoring
+- **500 kbps bitrate** - Good quality at this resolution
+
+If you need higher resolution/framerate, consider upgrading to a Raspberry Pi 4 or 5.
 
 ## Troubleshooting
 

@@ -36,15 +36,19 @@ set STREAM_PATH=camera
 
 echo Connecting to rtsp://%CAMERA_IP%:%RTSP_PORT%/%STREAM_PATH%
 echo.
+echo Stream Info:
+echo - Resolution: 640x480 @ 10fps
+echo - Encoder: Hardware (h264_v4l2m2m)
+echo - Recommended Caching: 300ms
+echo.
 
 REM Launch VLC with low-latency settings
+REM Using 300ms caching for balanced performance (adjust if needed)
 %VLC_PATH% rtsp://%CAMERA_IP%:%RTSP_PORT%/%STREAM_PATH% ^
-    --network-caching=0 ^
+    --network-caching=300 ^
     --rtsp-tcp ^
     --no-audio ^
-    --live-caching=0 ^
-    --clock-jitter=0 ^
-    --clock-synchro=0
+    --live-caching=300
 
 echo.
 echo VLC closed.
