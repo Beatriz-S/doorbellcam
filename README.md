@@ -31,7 +31,9 @@ sudo reboot
 
 ### 2. Set Up Pi 5 (NVR Server)
 
-See complete guide in [`SETUP.md`](SETUP.md)
+**Quick Start**: [`PI5-QUICK-START.md`](PI5-QUICK-START.md) - 20 minute setup  
+**Detailed Guide**: [`PI5-SETUP.md`](PI5-SETUP.md) - Complete instructions  
+**Original Guide**: [`SETUP.md`](SETUP.md) - Full system overview
 
 ```bash
 # On Raspberry Pi 5
@@ -44,7 +46,7 @@ git clone https://github.com/yourusername/doorbellcam.git
 cd doorbellcam
 
 # Configure
-cp .env.example .env
+cp env.template .env
 nano .env  # Update with your settings
 nano config/frigate.yml  # Update camera IP
 
@@ -60,8 +62,13 @@ docker-compose up -d
 
 ## 📚 Documentation
 
-- **[Complete Setup Guide](SETUP.md)** - Detailed step-by-step instructions
-- **[Pi Zero Setup](pi-zero-setup/README.md)** - Camera streaming setup
+### Setup Guides
+- **[Pi 5 Quick Start](PI5-QUICK-START.md)** - ⚡ Fast 20-minute setup for Pi 5
+- **[Pi 5 Complete Guide](PI5-SETUP.md)** - 📖 Detailed Pi 5 setup with troubleshooting
+- **[Pi Zero Setup](pi-zero-setup/README.md)** - 📷 Camera streaming setup
+- **[Complete System Setup](SETUP.md)** - 🏗️ Full system overview (both Pi's)
+
+### Reference
 - **[Architecture Compliance](ARCHITECTURE_COMPLIANCE.md)** - How we follow Frigate best practices
 - **[Frigate Documentation](https://docs.frigate.video)** - Official Frigate docs
 

@@ -26,13 +26,13 @@ fi
 # Check if .env file exists
 if [ ! -f .env ]; then
     echo "Warning: .env file not found"
-    echo "Creating from .env.example..."
-    if [ -f .env.example ]; then
-        cp .env.example .env
+    echo "Creating from env.template..."
+    if [ -f env.template ]; then
+        cp env.template .env
         echo "Please edit .env file with your settings"
         exit 1
     else
-        echo "Error: .env.example not found"
+        echo "Error: env.template not found"
         exit 1
     fi
 fi
