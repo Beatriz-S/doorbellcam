@@ -30,9 +30,10 @@ apt-get install -y \
     python3 \
     python3-pip
 
-# Enable camera
-echo "Enabling camera interface..."
-raspi-config nonint do_camera 0
+# Enable camera (skip for USB cameras, but safe to run)
+echo "Checking camera interface..."
+# Note: USB cameras don't need raspi-config, but this is harmless
+# raspi-config nonint do_camera 0
 
 # Create directory for streaming service
 echo "Creating service directory..."
