@@ -63,8 +63,7 @@ snapshots:
     default: 14  # Keep snapshots for 14 days
 
 # Live view configuration
-live:
-  stream_name: doorbell  # Default camera for live view
+# Note: live.stream_name is deprecated in newer Frigate versions
 
 # Object detection configuration
 objects:
@@ -161,7 +160,6 @@ cameras:
 ui:
   live_mode: webrtc  # Options: webrtc (recommended), mse, jsmpeg
   timezone: America/Los_Angeles  # Change to your timezone
-  use_experimental: false
   strftime_fmt: "%Y-%m-%d %H:%M"
 
 # Notification configuration (via MQTT)

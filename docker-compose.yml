@@ -8,13 +8,11 @@ services:
     restart: unless-stopped
     privileged: true  # Required for hardware acceleration
     shm_size: "256mb"  # Increase if you have multiple cameras
-    devices:
-      # Uncomment if you have a Coral TPU (highly recommended)
-      # - /dev/bus/usb:/dev/bus/usb
-      # - /dev/apex_0:/dev/apex_0
-      
-      # For Intel hardware acceleration (if available)
-      # - /dev/dri/renderD128
+    # Uncomment devices section if you have a Coral TPU or Intel GPU:
+    # devices:
+    #   - /dev/bus/usb:/dev/bus/usb
+    #   - /dev/apex_0:/dev/apex_0
+    #   - /dev/dri/renderD128
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./config/frigate.yml:/config/config.yml
