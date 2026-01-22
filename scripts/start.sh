@@ -15,11 +15,11 @@ if ! command -v docker &> /dev/null; then
     exit 1
 fi
 
-# Check if docker-compose is installed
-if ! command -v docker-compose &> /dev/null; then
-    echo "Error: docker-compose is not installed"
-    echo "Please install docker-compose first:"
-    echo "  sudo apt-get install -y docker-compose"
+# Check if docker compose is available
+if ! docker compose version &> /dev/null; then
+    echo "Error: docker compose is not available"
+    echo "Please install Docker Compose plugin:"
+    echo "  sudo apt-get install -y docker-compose-plugin"
     exit 1
 fi
 
@@ -49,7 +49,7 @@ mkdir -p config/mosquitto
 # Start Docker containers
 echo ""
 echo "Starting Docker containers..."
-docker-compose up -d
+docker compose up -d
 
 # Wait a moment for containers to start
 sleep 3
@@ -57,7 +57,7 @@ sleep 3
 # Check container status
 echo ""
 echo "Container status:"
-docker-compose ps
+docker compose ps
 
 # Get IP address
 IP_ADDR=$(hostname -I | awk '{print $1}')
@@ -73,8 +73,8 @@ echo "  Node-RED:    http://${IP_ADDR}:1880"
 echo "  Portainer:   http://${IP_ADDR}:9000"
 echo ""
 echo "To view logs:"
-echo "  docker-compose logs -f frigate"
+echo "  docker compose logs -f frigate"
 echo ""
 echo "To stop:"
-echo "  docker-compose down"
+echo "  docker compose down"
 echo ""

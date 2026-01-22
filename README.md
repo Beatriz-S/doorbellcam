@@ -16,7 +16,22 @@ A complete DIY doorbell camera system using Raspberry Pi 5 and Pi Zero 2 W with 
 - **Raspberry Pi Zero 2 W**: Camera streaming (RTSP server)
 - **Raspberry Pi 5**: NVR with Frigate, MQTT, Node-RED, and Portainer
 
-## 📋 Quick Start
+## 🚀 Daily Usage (System Already Set Up)
+
+**If your system is already installed and you just need to start it:**
+
+👉 **[See STARTUP-GUIDE.md](STARTUP-GUIDE.md)** - Complete guide for:
+- Starting/stopping both devices
+- Accessing Frigate web UI
+- Checking system status
+- Troubleshooting common issues
+- Quick command reference
+
+**Quick start:** Just power on both devices, wait 2-3 minutes, then access Frigate at `http://YOUR_PI5_IP:5000`
+
+---
+
+## 📋 Initial Setup (First Time Installation)
 
 ### 1. Set Up Pi Zero 2 W (Camera)
 
@@ -62,17 +77,80 @@ docker-compose up -d
 
 ## 📚 Documentation
 
-### Setup Guides
-- **[Pi 5 Quick Start](PI5-QUICK-START.md)** - ⚡ Fast 20-minute setup for Pi 5
-- **[Pi 5 Complete Guide](PI5-SETUP.md)** - 📖 Detailed Pi 5 setup with troubleshooting
-- **[Pi Zero Setup](pi-zero-setup/README.md)** - 📷 Camera streaming setup
-- **[Complete System Setup](SETUP.md)** - 🏗️ Full system overview (both Pi's)
+### 📖 Documentation Guide - Which File Do I Need?
 
-### Reference
-- **[Architecture Compliance](ARCHITECTURE_COMPLIANCE.md)** - How we follow Frigate best practices
-- **[Frigate Documentation](https://docs.frigate.video)** - Official Frigate docs
+**Main Documentation:**
 
-## 🛠️ Management Scripts
+| File | Purpose | When to Use |
+|------|---------|-------------|
+| **[STARTUP-GUIDE.md](STARTUP-GUIDE.md)** | 🚀 Daily operations & troubleshooting | ⭐ System already set up - use this daily! |
+| **[PI5-QUICK-START.md](PI5-QUICK-START.md)** | ⚡ Fast Pi 5 setup checklist | First time setup - want speed (20 min) |
+| **[PI5-SETUP.md](PI5-SETUP.md)** | 📖 Complete Pi 5 guide | First time setup - want details & explanations |
+| **[SETUP.md](SETUP.md)** | 🏗️ Full system overview | Understanding the complete architecture |
+| **[pi-zero-setup/README.md](pi-zero-setup/README.md)** | 📷 Pi Zero camera setup | Setting up the camera device |
+| **[ARCHITECTURE_COMPLIANCE.md](ARCHITECTURE_COMPLIANCE.md)** | 🏛️ Technical architecture | Understanding design decisions |
+
+**Pi Zero Specific Documentation:**
+
+| File | Purpose | When to Use |
+|------|---------|-------------|
+| **[pi-zero-setup/README.md](pi-zero-setup/README.md)** | 📷 Complete Pi Zero setup | Setting up camera streaming |
+| **[pi-zero-setup/WORKING-CONFIG.md](pi-zero-setup/WORKING-CONFIG.md)** | ⚙️ Tested configurations | Reference working settings |
+| **[pi-zero-setup/VIEWING-STREAM.md](pi-zero-setup/VIEWING-STREAM.md)** | 📺 Stream viewing methods | Testing camera stream |
+| **[pi-zero-setup/LOW-LATENCY-GUIDE.md](pi-zero-setup/LOW-LATENCY-GUIDE.md)** | ⚡ Latency optimization | Reducing stream delay |
+
+### 🎯 Quick Start Paths
+
+**Path 1: Already Set Up?**
+→ **[STARTUP-GUIDE.md](STARTUP-GUIDE.md)** (Daily operations)
+
+**Path 2: First Time Setup?**
+1. **[pi-zero-setup/README.md](pi-zero-setup/README.md)** (Set up camera)
+2. **[PI5-QUICK-START.md](PI5-QUICK-START.md)** (Set up Pi 5 - fast) OR **[PI5-SETUP.md](PI5-SETUP.md)** (detailed)
+3. **[STARTUP-GUIDE.md](STARTUP-GUIDE.md)** (Daily operations)
+
+**Path 3: Want Full Understanding?**
+→ **[SETUP.md](SETUP.md)** (Complete system overview)
+
+### External Resources
+- **[Frigate Documentation](https://docs.frigate.video)** - Official Frigate NVR docs
+- **[MediaMTX Documentation](https://github.com/bluenviron/mediamtx)** - RTSP server docs
+- **[Node-RED Documentation](https://nodered.org/docs/)** - Automation platform docs
+
+## 🛠️ Management & Daily Operations
+
+### Quick Commands
+
+**On Pi 5:**
+```bash
+cd ~/doorbellcam
+
+# Check status
+docker compose ps
+
+# Start all services
+docker compose up -d
+
+# Stop all services
+docker compose down
+
+# Restart Frigate
+docker compose restart frigate
+
+# View logs
+docker compose logs -f frigate
+```
+
+**On Pi Zero:**
+```bash
+# Check camera service
+sudo systemctl status mediamtx
+
+# Restart camera
+sudo systemctl restart mediamtx
+```
+
+### Management Scripts
 
 ```bash
 # Start system
@@ -90,6 +168,8 @@ docker-compose up -d
 # View logs
 ./scripts/logs.sh frigate
 ```
+
+📖 **[Full command reference in STARTUP-GUIDE.md](STARTUP-GUIDE.md)**
 
 ## 🔧 Configuration
 

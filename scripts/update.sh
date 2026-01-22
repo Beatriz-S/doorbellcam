@@ -7,11 +7,11 @@ echo "=========================================="
 echo ""
 
 echo "Pulling latest Docker images..."
-docker-compose pull
+docker compose pull
 
 echo ""
 echo "Restarting containers with new images..."
-docker-compose up -d
+docker compose up -d
 
 echo ""
 echo "Cleaning up old images..."
@@ -23,5 +23,5 @@ echo "Update Complete!"
 echo "=========================================="
 echo ""
 echo "Current container status:"
-docker-compose ps
+docker compose ps
 echo ""

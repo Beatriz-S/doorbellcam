@@ -10,4 +10,4 @@ echo ""
 echo "Press Ctrl+C to exit"
 echo ""
 
-docker-compose logs -f ${SERVICE}
+docker compose logs -f ${SERVICE}
