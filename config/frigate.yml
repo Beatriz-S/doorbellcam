@@ -11,9 +11,12 @@ mqtt:
 go2rtc:
   streams:
     doorbell:
-      - rtsp://10.0.0.18:8554/camera
+      - rtsp://10.0.0.18:8554/camera#audio=aac
     doorbell_sub:  # Optional: if you have a sub-stream
-      - rtsp://10.0.0.18:8554/camera
+      - rtsp://10.0.0.18:8554/camera#audio=aac
+  webrtc:
+    candidates:
+      - stun:8555
 
 # Database configuration
 database:
